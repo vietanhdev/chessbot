@@ -2,7 +2,7 @@
 
 This project will be designed in following progress:
 
-Chess Vision -> Robot Arm -> Chess Clock -> Combine everythings
+Chess Vision -> Robot Arm -> Chess Clock -> Combine everything
 
 ### 1. CHESS VISION
 - Chess board detector
