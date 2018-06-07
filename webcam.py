@@ -29,13 +29,12 @@ while(True):
     if key == 13:
         try:
            
-            tmp = frame
-            result = neural_chessboard.detector.detect(tmp)
+            result = neural_chessboard.detector.detect(frame)
+            
             cv2.imshow('image', result)
             cv2.waitKey(0)
             
-        except Error:
-            print(Error)
+        except:
             print("Error in detecting board")
 
     elif key & 0xFF == ord('q'):
