@@ -9,7 +9,6 @@ from neural_chessboard.slid import pSLID, SLID, slid_tendency #== step 1
 from neural_chessboard.laps import LAPS                       #== step 2
 from neural_chessboard.llr import LLR, llr_pad                #== step 3
 
-from keras import backend as K
 import cv2
 load = cv2.imread
 save = cv2.imwrite
@@ -67,7 +66,6 @@ def detect(img):
 
 	print("Detect board done!")
 
-	K.clear_session(); gc.collect() # FIX: tensorflow#3388
 	return NC_IMAGE['orig']
 	
 ################################################################################

@@ -6,7 +6,7 @@ import neural_chessboard.detector
 import importlib
 import gc
 import neural_chessboard
-from keras import backend as K
+
 
 pathlib.Path('./tmp').mkdir(parents=True, exist_ok=True) 
 cap = cv2.VideoCapture(0)
@@ -27,31 +27,16 @@ while(True):
     key = cv2.waitKey(10)
 
     if key == 13:
-        # try:
+        try:
            
             tmp = frame
             result = neural_chessboard.detector.detect(tmp)
             cv2.imshow('image', result)
             cv2.waitKey(0)
-
-            # neural_chessboard = None
-            # gc.collect()
-
-            # import neural_chessboard
-            # # detector = None
-            # neural_chessboard2 = importlib.reload(neural_chessboard)
             
-            K.clear_session()
-
-            tmp = frame
-            result = neural_chessboard.detector.detect(tmp)
-            cv2.imshow('image', result)
-            cv2.waitKey(0)
-
-            
-        # except Error:
-        #     print(Error)
-        #     print("Error in detecting board")
+        except Error:
+            print(Error)
+            print("Error in detecting board")
 
     elif key & 0xFF == ord('q'):
         break

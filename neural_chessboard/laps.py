@@ -7,11 +7,19 @@ import cv2, numpy as np
 import scipy, scipy.cluster
 from neural_chessboard.config import *
 
+import tensorflow as tf
+
 from keras.models import model_from_json
 __laps_model = 'neural_chessboard/data/models/laps.model.json'
 __laps_weights = 'neural_chessboard/data/models/laps.weights.h5'
+global NC_LAPS_MODEL
 NC_LAPS_MODEL = model_from_json(open(__laps_model, 'r').read())
 NC_LAPS_MODEL.load_weights(__laps_weights)
+
+# Backup graph after loading model to fixbug
+# https://github.com/keras-team/keras/issues/2397
+global graph
+graph = tf.get_default_graph()
 
 #from keras.utils import plot_model, print_summary
 #plot_model(NC_LAPS_MODEL, show_shapes=True, to_file='model.png')
@@ -40,6 +48,7 @@ def laps_cluster(points, max_dist=10):
 def laps_detector(img):
 	"""determine if that shape is positive"""
 	global NC_LAYER
+	global graph
 
 	hashid = str(hash(img.tostring()))
 
@@ -74,7 +83,11 @@ def laps_detector(img):
 	
 	if i == 4: return (True, 1)
 
-	pred = NC_LAPS_MODEL.predict(X)
+	# with graph.as_default(): help fixing a bug
+	# https://github.com/keras-team/keras/issues/2397
+	with graph.as_default():
+		pred = NC_LAPS_MODEL.predict(X)
+
 	a, b = pred[0][0], pred[0][1]
 	t = a > b and b < 0.03 and a > 0.975
 
