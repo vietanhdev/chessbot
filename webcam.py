@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import os
 import pathlib
-import neural_chessboard.detector
+import neural_chessboard.detector as board_detector
 import importlib
 import gc
 import neural_chessboard
@@ -29,10 +29,22 @@ while(True):
     if key == 13:
         try:
            
-            result = neural_chessboard.detector.detect(frame)
+            transformMatrices = board_detector.detect(frame)
+            result = board_detector.getCropImage(frame, transformMatrices)
             
             cv2.imshow('image', result)
             cv2.waitKey(0)
+
+            # Use tranformMatrices to crop 100 next images
+            for _ in range(100):
+                # Capture frame-by-frame
+                ret, frame = cap.read()
+                if not ret:
+                    continue
+
+                result = board_detector.getCropImage(frame, transformMatrices)
+                cv2.imshow('image', result)
+                cv2.waitKey(1)
             
         except:
             print("Error in detecting board")

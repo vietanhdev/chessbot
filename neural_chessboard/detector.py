@@ -13,11 +13,14 @@ import cv2
 load = cv2.imread
 save = cv2.imwrite
 
+
+
 #NC_SCORE = -1
 
 ################################################################################
 
 def layer():
+	global resultMatrices
 	global NC_LAYER, NC_IMAGE #, NC_SCORE
 	
 	print(utils.ribb("==", sep="="))
@@ -45,16 +48,22 @@ def layer():
 	# --- 4 step --- preparation for next layer (deep analysis) ----------------
 	print(utils.ribb(utils.head("   *"), utils.clock(), "--- 4 step "))
 	print(four_points)
-	try: NC_IMAGE.crop(four_points)
+	try:
+		NC_IMAGE.crop(four_points)
+		resultMatrices.append(four_points)
 	except:
 		utils.warn("unfortunately, but the next layer is not needed")
 		NC_IMAGE.crop(inner_points)
+		resultMatrices.append(inner_points)
 
 	print("\n")
 
 ################################################################################
 
 def detect(img):
+	global resultMatrices
+	resultMatrices = []
+
 	utils.reset()
 	global NC_LAYER, NC_IMAGE, NC_CONFIG
 
@@ -63,10 +72,20 @@ def detect(img):
 
 	for _ in range(NC_CONFIG['layers']):
 		NC_LAYER += 1; layer()
-
+		
 	print("Detect board done!")
+	return resultMatrices
+	# return NC_IMAGE['orig']
 
-	return NC_IMAGE['orig']
+def getCropImage(img, transformMatrices):
+	utils.reset()
+	imgObject = utils.ImageObject(img)
+
+	# Crop image using transform matrices
+	for i in range(len(transformMatrices)):
+		imgObject.crop(transformMatrices[i])
+
+	return imgObject['orig']
 	
 ################################################################################
 
