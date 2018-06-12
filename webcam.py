@@ -55,7 +55,7 @@ while(True):
                 np.count_nonzero
 
                 # Canny
-                canny = cv2.Canny(crop,50,150)
+                canny = cv2.Canny(crop, 50, 100)
 
 
                 # Detect if there is a piece
@@ -66,14 +66,14 @@ while(True):
                 for i in range(8):
                     for j in range(8):
 
-                        sq = canny[i*square_size + borderPadding:(i+1)*square_size - borderPadding * 2:, j*square_size + borderPadding:(j+1)*square_size - borderPadding * 2:]
+                        sq = canny[i*square_size + 2 * borderPadding:(i+1)*square_size - borderPadding * 2:, j*square_size + 2 * borderPadding:(j+1)*square_size - borderPadding * 2:]
 
-                        crop[i*square_size + borderPadding:(i+1)*square_size - borderPadding * 2:, j*square_size + borderPadding:(j+1)*square_size - borderPadding * 2:, ::] = (0,255,0)
+                        crop[i*square_size + borderPadding:i*square_size + borderPadding + 10:, j*square_size + borderPadding:j*square_size + borderPadding + 10:, ::] = (0,255,0)
                         
                         # Count non zero point
                         numOfNonZero = cv2.countNonZero(sq)
 
-                        if (numOfNonZero > 60):
+                        if (numOfNonZero > 40):
                             crop[i*square_size + borderPadding:(i+1)*square_size - borderPadding * 2:, j*square_size + borderPadding:(j+1)*square_size - borderPadding * 2:, ::] = (0,0,255)
 
 
