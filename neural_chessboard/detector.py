@@ -1,6 +1,7 @@
 import gc, os, sys, glob, argparse
 import neural_chessboard.utils as utils
 print("<<< \x1b[5;32;40m neural-chessboard \x1b[0m >>>")
+from time import process_time, sleep
 
 
 from neural_chessboard.config import *
@@ -78,12 +79,26 @@ def detect(img):
 	# return NC_IMAGE['orig']
 
 def getCropImage(img, transformMatrices):
+	beginTime = process_time()
+	
 	utils.reset()
 	imgObject = utils.ImageObject(img)
+	
+	# Measure time
+	endTime = process_time()
+	timeLast = endTime - beginTime
+	print("ImgObject Time: " + str(timeLast))
+	beginTime = endTime
 
 	# Crop image using transform matrices
 	for i in range(len(transformMatrices)):
 		imgObject.crop(transformMatrices[i])
+		
+	# Measure time
+	endTime = process_time()
+	timeLast = endTime - beginTime
+	print("ImgObject Crop Time: " + str(timeLast))
+	beginTime = endTime
 
 	return imgObject['orig']
 	

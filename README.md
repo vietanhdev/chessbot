@@ -1,3 +1,9 @@
+# CHESSBOT
+
+This project aim is to implement a robot which can plays chess with people.
+
+The source code was developed and tested on Raspberry Pi 2.
+
 # DESIGNING STEPS:
 
 This project will be designed in following progress:

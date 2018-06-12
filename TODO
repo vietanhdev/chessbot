@@ -1,2 +1,2 @@
 # What to do next?
-- Fix bug: Error in detecting chessboard after the first time // Done
+- Increase performance in cropping chessboard using determined matrices.

@@ -6,13 +6,20 @@ import neural_chessboard.detector as board_detector
 import importlib
 import gc
 import neural_chessboard
+import time
 
 
 pathlib.Path('./tmp').mkdir(parents=True, exist_ok=True) 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
+
+cap.set(3,320)
+cap.set(4,240)
 
 cv2.namedWindow('image', cv2.WINDOW_NORMAL)
 cv2.namedWindow('canny', cv2.WINDOW_NORMAL)
+
+beginTime = 0
+endTime = 0
 
 while(True):
 
@@ -38,29 +45,52 @@ while(True):
 
             # Use tranformMatrices to crop 100 next images
             for _ in range(10000):
+				
+                # Measure time
+                endTime = time.process_time()
+                timeLast = endTime - beginTime
+                print("Time: " + str(timeLast))
+                beginTime = endTime
+				
+				
                 # Capture frame-by-frame
                 ret, frame = cap.read()
                 if not ret:
                     continue
 
+                # Measure time
+                endTime = time.process_time()
+                timeLast = endTime - beginTime
+                print("Capture Time: " + str(timeLast))
+                beginTime = endTime
+        
+
                 crop = board_detector.getCropImage(frame, transformMatrices)
+                
+                # Measure time
+                endTime = time.process_time()
+                timeLast = endTime - beginTime
+                print("Crop Time: " + str(timeLast))
+                beginTime = endTime
 
                 # Unpack shape of crop
                 rows,cols,channels = crop.shape
 
-                # crop[:row/8,:cols/8] = (0,0,255)
-
                 square_size = int (rows / 8)
-
-                np.count_nonzero
 
                 # Canny
                 canny = cv2.Canny(crop, 50, 100)
+                
+                # Measure time
+                endTime = time.process_time()
+                timeLast = endTime - beginTime
+                print("Canny Time: " + str(timeLast))
+                beginTime = endTime
 
 
                 # Detect if there is a piece
                 # Padding to the center of the square
-                borderPadding = 25
+                borderPadding = 15
 
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 for i in range(8):
@@ -77,11 +107,17 @@ while(True):
                             crop[i*square_size + borderPadding:(i+1)*square_size - borderPadding * 2:, j*square_size + borderPadding:(j+1)*square_size - borderPadding * 2:, ::] = (0,0,255)
 
 
-                cv2.imshow('canny', canny)
-                cv2.waitKey(1)
+                 # Measure time
+                endTime = time.process_time()
+                timeLast = endTime - beginTime
+                print("Detect Time: " + str(timeLast))
+                beginTime = endTime
 
-                cv2.imshow('image', crop)
-                cv2.waitKey(1)
+                #~ cv2.imshow('canny', canny)
+                #~ cv2.waitKey(1)
+
+                #~ cv2.imshow('image', crop)
+                #~ cv2.waitKey(1)
             
         # except:
         #     print("Error in detecting board")

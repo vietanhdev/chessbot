@@ -2,8 +2,11 @@ import neural_chessboard.utils as utils
 import neural_chessboard.debug as debug
 
 import scipy, cv2, pyclipper, numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.path, matplotlib.pyplot as plt
 import matplotlib.path as mplPath
+
 import collections, itertools, random, math
 from copy import copy
 na = np.array
