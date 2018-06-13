@@ -83,7 +83,7 @@ while(True):
     key = cv2.waitKey(10)
 
     if key == 13:
-        # try:
+        try:
            
             transformMatrices = board_detector.detect(frame)
             result = board_detector.getCropImage(frame, transformMatrices)
@@ -145,8 +145,8 @@ while(True):
                 
                 measureTime("Show result")
             
-        # except:
-        #     print("Error in detecting board")
+        except:
+            print("Error in detecting board")
 
     elif key & 0xFF == ord('q'):
         break
